@@ -2,8 +2,7 @@ name: Build EXE
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -11,37 +10,29 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout репозитория
-        uses: actions/checkout@v3
+    - name: Checkout репозитория
+      uses: actions/checkout@v3
 
-      - name: Установка Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
+    - name: Установка Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
 
-      - name: Установка зависимостей
-        run: |
-          python -m pip install --upgrade pip
-          pip install pyinstaller
+    - name: Установка зависимостей
+      run: pip install keyboard pyperclip
 
-      - name: Сборка EXE
-        run: |
-          pyinstaller punto_switcher_clone.spec
+    - name: Установка PyInstaller
+      run: pip install pyinstaller
 
-      - name: Посмотреть содержимое папки dist
-        run: Get-ChildItem -Recurse -Path dist
+    - name: Сборка EXE через PyInstaller
+      run: |
+        pyinstaller punto_switcher_clone.spec
 
-      - name: Архивировать EXE
-        run: Compress-Archive -Path dist\* -DestinationPath punto_switcher_clone.zip
+    - name: Проверка содержимого папки dist
+      run: Get-ChildItem -Recurse -Path dist
 
-      - name: Загрузить ZIP как артефакт
-        uses: actions/upload-artifact@v2.3.1
-        with:
-          name: punto_switcher_clone_zip
-          path: punto_switcher_clone.zip
+    - name: Архивировать exe-файл
+      run: Compress-Archive -Path dist\* -DestinationPath punto_switcher_clone.zip
 
-      - name: Загрузить EXE как артефакт
-        uses: actions/upload-artifact@v2.3.1
-        with:
-          name: punto_switcher_clone_exe
-          path: dist/punto_switcher_clone.exe
+    - name: Финальная проверка
+      run: Get-ChildItem -Path dist
