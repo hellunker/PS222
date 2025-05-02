@@ -1,9 +1,9 @@
-name: Build EXE
+name: Windows Build
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
+    branches:
+      - main
 
 jobs:
   build:
@@ -19,24 +19,20 @@ jobs:
           python-version: '3.9'
 
       - name: Install dependencies
-        run: |
-          if (Test-Path "requirements.txt") {
-            pip install -r requirements.txt
-          }
-
-      - name: Install PyInstaller
         run: pip install pyinstaller
 
-      - name: Build EXE
-        run: |
-          pyinstaller punto_switcher_clone.py --onefile --noconsole
-          dir dist
+      - name: Build with PyInstaller
+        run: pyinstaller punto_switcher_clone.spec
 
-      - name: Archive EXE
+      - name: Compress build output
         run: Compress-Archive -Path dist\* -DestinationPath punto_switcher_clone.zip
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: punto_switcher_clone
-          path: punto_switcher_clone.zip
+      - name: Commit ZIP artifact to repo
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          mkdir artifacts
+          mv punto_switcher_clone.zip artifacts/
+          git add artifacts/punto_switcher_clone.zip
+          git commit -m "Add build artifact"
+          git push
