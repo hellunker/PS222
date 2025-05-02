@@ -1,0 +1,35 @@
+name: Build EXE
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Установка Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Установка зависимостей
+      run: pip install -r requirements.txt
+
+    - name: Установка PyInstaller
+      run: pip install pyinstaller
+
+    - name: Сборка EXE
+      run: |
+        pyinstaller punto_switcher_clone.spec
+        dir dist
+
+    - name: Проверка наличия .exe
+      run: |
+        echo "Содержимое папки dist:"
+        dir dist
