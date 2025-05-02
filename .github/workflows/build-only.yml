@@ -27,10 +27,12 @@ jobs:
     - name: Сборка EXE через PyInstaller
       run: |
         pyinstaller punto_switcher_clone.spec
-        dir dist
+
+    - name: Проверка содержимого папки dist
+      run: Get-ChildItem -Path dist
 
     - name: Архивировать exe-файл
       run: Compress-Archive -Path dist\punto_switcher_clone.exe -DestinationPath dist\punto_switcher_clone.zip
 
-    - name: Показать содержимое папки dist
-      run: dir dist
+    - name: Финальная проверка
+      run: Get-ChildItem -Path dist
