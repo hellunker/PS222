@@ -36,3 +36,9 @@ jobs:
 
     - name: Финальная проверка
       run: Get-ChildItem -Path dist
+
+    - name: Upload EXE напрямую
+      uses: actions/upload-artifact@v3
+      with:
+        name: punto_switcher_clone_exe
+        path: dist/punto_switcher_clone.exe    
