@@ -2,7 +2,7 @@ name: Build EXE
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -10,30 +10,33 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: '3.9'
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install pyinstaller
+          if (Test-Path "requirements.txt") {
+            pip install -r requirements.txt
+          }
 
-      - name: Build EXE with PyInstaller
-        run: pyinstaller punto_switcher_clone.spec
+      - name: Install PyInstaller
+        run: pip install pyinstaller
 
-      - name: Список файлов в dist
-        run: Get-ChildItem dist
+      - name: Build EXE
+        run: |
+          pyinstaller punto_switcher_clone.py --onefile --noconsole
+          dir dist
 
-      - name: Упаковать dist в zip
+      - name: Archive EXE
         run: Compress-Archive -Path dist\* -DestinationPath punto_switcher_clone.zip
 
-      - name: Загрузить артефакт (zip)
-        uses: actions/upload-artifact@8b53e96d638b9b7fe04cda539af8d1f33eb5b6a2
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
         with:
-          name: punto_switcher_clone_zip
+          name: punto_switcher_clone
           path: punto_switcher_clone.zip
