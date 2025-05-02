@@ -29,8 +29,8 @@ jobs:
         pyinstaller punto_switcher_clone.spec
         dir dist
 
-    - name: Сохранение .exe как артефакта
-      uses: actions/upload-artifact@8b53e96d638b9b7fe04cda539af8d1f33eb5b6a2
-      with:
-        name: punto_switcher_clone
-        path: dist/punto_switcher_clone.exe
+    - name: Архивировать exe-файл
+      run: Compress-Archive -Path dist\punto_switcher_clone.exe -DestinationPath dist\punto_switcher_clone.zip
+
+    - name: Показать содержимое папки dist
+      run: dir dist
