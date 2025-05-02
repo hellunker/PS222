@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout repo
+    - name: Checkout репозитория
       uses: actions/checkout@v3
 
     - name: Установка Python
@@ -24,18 +24,13 @@ jobs:
     - name: Установка PyInstaller
       run: pip install pyinstaller
 
-    - name: Сборка EXE
+    - name: Сборка EXE через PyInstaller
       run: |
         pyinstaller punto_switcher_clone.spec
         dir dist
 
-    - name: Проверка наличия .exe
-      run: |
-        echo "Содержимое папки dist:"
-        dir dist
-
     - name: Сохранение .exe как артефакта
-      uses: actions/upload-artifact@v3.1.3
+      uses: actions/upload-artifact@v2
       with:
         name: punto_switcher_clone
         path: dist/punto_switcher_clone.exe
