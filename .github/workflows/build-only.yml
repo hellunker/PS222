@@ -33,7 +33,7 @@ jobs:
         run: Compress-Archive -Path dist\* -DestinationPath punto_switcher_clone.zip
 
       - name: Загрузить артефакт (zip)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: punto_switcher_clone_zip
           path: punto_switcher_clone.zip
