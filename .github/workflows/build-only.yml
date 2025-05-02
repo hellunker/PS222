@@ -19,7 +19,7 @@ jobs:
         python-version: '3.9'
 
     - name: Установка зависимостей
-      run: pip install -r requirements.txt
+      run: pip install keyboard pyperclip
 
     - name: Установка PyInstaller
       run: pip install pyinstaller
