@@ -35,7 +35,7 @@ jobs:
         dir dist
 
     - name: Сохранение .exe как артефакта
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.3
       with:
         name: punto_switcher_clone
         path: dist/punto_switcher_clone.exe
