@@ -33,3 +33,9 @@ jobs:
       run: |
         echo "Содержимое папки dist:"
         dir dist
+
+    - name: Сохранение .exe как артефакта
+      uses: actions/upload-artifact@v3
+      with:
+        name: punto_switcher_clone
+        path: dist/punto_switcher_clone.exe
